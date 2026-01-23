@@ -1,0 +1,11 @@
+@_3moduleAPI_HostAddress = http://localhost:5187
+
+GET {{_3moduleAPI_HostAddress}}/todos/
+Accept: application/json
+
+###
+
+GET {{_3moduleAPI_HostAddress}}/todos/1
+Accept: application/json
+
+###
