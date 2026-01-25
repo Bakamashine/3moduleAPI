@@ -20,6 +20,7 @@ builder.Services.AddSingleton<JwtOptions>();
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddDbContext<ApplicationContext>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 
 builder.Logging.AddConsole();
 builder.Services.AddCors(options =>
