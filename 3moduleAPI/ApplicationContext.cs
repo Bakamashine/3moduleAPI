@@ -10,7 +10,8 @@ public class ApplicationContext : DbContext
         Database.EnsureCreated();
     }
 
-    public DbSet<UserEntity> Users => Set<UserEntity>();
+    public DbSet<UserEntity> User => Set<UserEntity>();
+    public DbSet<RoomEntity> Room => Set<RoomEntity>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

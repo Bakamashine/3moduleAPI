@@ -9,7 +9,7 @@ public class UniqueNameAttribute : ValidationAttribute
         if (value is not string name) return ValidationResult.Success;
         var context = validationContext.GetService(typeof(ApplicationContext)) as ApplicationContext;
 
-        if (context != null && !context.Users.Any(a => a.Name == name))
+        if (context != null && !context.User.Any(a => a.Name == name))
             return ValidationResult.Success;
         return new ValidationResult("The name is exists");
     }

@@ -8,7 +8,7 @@ public class UserRepository(ApplicationContext context) : IUserRepository
 {
     public async Task<UserEntity?> GetByName(string name)
     {
-        return await context.Users.AsNoTracking()
+        return await context.User.AsNoTracking()
             .FirstOrDefaultAsync(user =>
                 name == user.Name);
     }

@@ -21,7 +21,7 @@ public class UserController(
     [HttpPost("/register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserRequest request)
     {
-        await context.Users.AddAsync(UserEntity.Create(request.Name, passwordHasher.PasswordHash(request.Password)));
+        await context.User.AddAsync(UserEntity.Create(request.Name, passwordHasher.PasswordHash(request.Password)));
         await context.SaveChangesAsync();
         return Ok();
     }
