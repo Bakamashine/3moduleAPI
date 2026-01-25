@@ -1,20 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace _3moduleAPI.Validation
-{
-    public class UniqueNameAttribute : ValidationAttribute
-    {
-        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
-        {
-            if (value is string name)
-            {
-                ApplicationContext? context = validationContext.GetService(typeof(ApplicationContext)) as ApplicationContext;
+namespace _3moduleAPI.Validation;
 
-                if (context != null && !context.Users.Any(a => a.Name == name)) {
-                    return new ValidationResult("Name is exists");
-                }
-            }
+public class UniqueNameAttribute : ValidationAttribute
+{
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+    {
+        if (value is not string name) return ValidationResult.Success;
+        var context = validationContext.GetService(typeof(ApplicationContext)) as ApplicationContext;
+
+        if (context != null && !context.Users.Any(a => a.Name == name))
             return ValidationResult.Success;
-        }
+        return new ValidationResult("The name is exists");
     }
 }

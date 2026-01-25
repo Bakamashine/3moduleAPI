@@ -1,20 +1,19 @@
-﻿using _3moduleAPI.Validation;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using _3moduleAPI.Validation;
 
-namespace _3moduleAPI.Contracts.Users
+namespace _3moduleAPI.Contracts.Users;
+
+public class RegisterUserRequest
 {
-    public class RegisterUserRequest
-    {
-        [Required]
-        [StringLength(25)]
-        [UniqueName]
-        public required string Name { set; get; }
+    [Required]
+    [StringLength(25)]
+    [UniqueName]
+    public required string Name { set; get; }
 
-        [Required][MinLength(8)] public required string Password { get; set; }
+    [Required] [MinLength(8)] public required string Password { get; set; }
 
-        [Required]
-        [Compare("Password")]
-        [MinLength(8)]
-        public required string PasswordConfirmed { set; get; }
-    }
+    [Required]
+    [Compare("Password")]
+    [MinLength(8)]
+    public required string PasswordConfirmed { set; get; }
 }
