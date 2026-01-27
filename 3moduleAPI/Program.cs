@@ -3,15 +3,21 @@ using _3moduleAPI.Contracts.Repository;
 using _3moduleAPI.Interfaces;
 using _3moduleAPI.Repository;
 using _3moduleAPI.Service;
+using dotenv.net;
+using dotenv.net.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
+DotEnv.Load();
 var builder = WebApplication.CreateSlimBuilder(args);
 
 //builder.Services.ConfigureHttpJsonOptions(options =>
 //{
 //    options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
 //});
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -23,9 +29,17 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 
 builder.Logging.AddConsole();
+EnvReader.TryGetStringValue("frontendUrl", out string? frontendUrl);
+frontendUrl ??= "http://localhost:5173";
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(MyAllowSpecificOrigins, policy => { policy.WithOrigins("http://localhost:5173"); });
+    options.AddPolicy(name: MyAllowSpecificOrigins, policy =>
+    {
+        policy.WithOrigins(frontendUrl)
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+    .AllowCredentials();
+    });
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -75,13 +89,14 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    // app.UseSwagger();
-    // app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
+app.UseCors(MyAllowSpecificOrigins);
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.UseCors(MyAllowSpecificOrigins);
 
 
 const string debugUrl = "http://localhost:5018";

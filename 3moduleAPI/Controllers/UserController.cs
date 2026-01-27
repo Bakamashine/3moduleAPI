@@ -30,7 +30,7 @@ public class UserController(
     public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
     {
         var user = await repository.GetByName(request.Name);
-        // logger.LogDebug($"Login user: {user}");
+        logger.LogDebug($"Login user: {user}");
         if (user == null || !passwordHasher.VerifyPassword(request.Password, user.Password))
             return NotFound();
         var token = jwtProvider.GenerateToken(user);
