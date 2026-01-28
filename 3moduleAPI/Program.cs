@@ -7,6 +7,7 @@ using dotenv.net;
 using dotenv.net.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 DotEnv.Load();
 var builder = WebApplication.CreateSlimBuilder(args);
@@ -60,31 +61,34 @@ builder.Services.AddSignalR();
 builder.Services.AddControllers();
 #pragma warning restore IL2026 // Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code
 builder.Services.AddEndpointsApiExplorer();
-// builder.Services.AddSwaggerGen(setup =>
-// {
-//     
-//     // var jwtSecurityScheme = new OpenApiSecurityScheme
-//     // {
-//     //     BearerFormat = "JWT",
-//     //     Name = "JWT Auth",
-//     //     In = ParameterLocation.Header,
-//     //     Type = SecuritySchemeType.Http,
-//     //     Scheme =JwtBearerDefaults.AuthenticationScheme,
-//     //     // Reference = new OpenApiReference
-//     //     // {
-//     //     //     Id = JwtBearerDefaults.AuthenticationScheme,
-//     //     //     Type = ReferenceType.SecurityScheme
-//     //     // }
-//     // };
-//     // setup.AddSecurityDefinition("Bearer", jwtSecurityScheme);
-//     // setup.AddSecurityRequirement(new OpenApiSecurityRequirement
-//     // {
-//     //     {
-//     //         jwtSecurityScheme,
-//     //         Array.Empty<string>()
-//     //     }
-//     // });
-// });
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "JWT Authorize",
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme.ToLowerInvariant(),
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+    });
+
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
