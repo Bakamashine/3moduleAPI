@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using _3moduleAPI.Validation;
+﻿using _3moduleAPI.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace _3moduleAPI.Contracts.Users;
 

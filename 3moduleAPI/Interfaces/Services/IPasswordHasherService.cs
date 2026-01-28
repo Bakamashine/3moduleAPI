@@ -1,4 +1,4 @@
-﻿namespace _3moduleAPI.Interfaces;
+﻿namespace _3moduleAPI.Interfaces.Services;
 
 public interface IPasswordHasherService
 {

@@ -1,8 +1,9 @@
-﻿using _3moduleAPI.Contracts.Repository;
-using _3moduleAPI.Contracts.Users;
+﻿using _3moduleAPI.Contracts.Users;
 using _3moduleAPI.Dto;
 using _3moduleAPI.Entity;
-using _3moduleAPI.Interfaces;
+using _3moduleAPI.Interfaces.Providers;
+using _3moduleAPI.Interfaces.Repository;
+using _3moduleAPI.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

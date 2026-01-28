@@ -1,6 +1,6 @@
-using _3moduleAPI.Contracts.Repository;
+using _3moduleAPI.Dto;
 using _3moduleAPI.Entity;
-using Microsoft.AspNetCore.Authorization;
+using _3moduleAPI.Interfaces.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,10 +28,30 @@ public class RoomController(ApplicationContext context, IRoomRepository reposito
         return Ok();
     }
 
-    [HttpGet()]
+    [HttpGet("all")]
     public async Task<IActionResult> GetAllRoom()
     {
-        var rooms = await context.Room.ToListAsync();
+        var rooms = await context.Room.Include(m => m.Blocks).ToListAsync();
         return Ok(rooms);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllRoomWithoutBlocks()
+    {
+        var rooms = await context.Room.AsNoTracking().ToListAsync();
+        var roomsDto = rooms.Select(m => new RoomDto
+        {
+            Id = m.Id,
+            Status = m.Status
+        }).ToList();
+        return Ok(roomsDto);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetRoomById(Guid id)
+    {
+        var room = await repository.GetByIdWithBlock(id);
+        if (room == null) return NotFound();
+        return Ok(room);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using _3moduleAPI.Entity;
 
-namespace _3moduleAPI.Interfaces;
+namespace _3moduleAPI.Interfaces.Providers;
 
 public interface IJwtProvider
 {

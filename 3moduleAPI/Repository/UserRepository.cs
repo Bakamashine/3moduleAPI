@@ -1,5 +1,5 @@
-using _3moduleAPI.Contracts.Repository;
 using _3moduleAPI.Entity;
+using _3moduleAPI.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace _3moduleAPI.Repository;

@@ -1,9 +1,9 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using _3moduleAPI.Entity;
+using _3moduleAPI.Interfaces.Providers;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using _3moduleAPI.Entity;
-using _3moduleAPI.Interfaces;
-using Microsoft.IdentityModel.Tokens;
 
 namespace _3moduleAPI;
 

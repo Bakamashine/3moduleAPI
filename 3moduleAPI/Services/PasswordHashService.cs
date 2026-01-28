@@ -1,4 +1,4 @@
-﻿using _3moduleAPI.Interfaces;
+﻿using _3moduleAPI.Interfaces.Services;
 using static BCrypt.Net.BCrypt;
 
 namespace _3moduleAPI.Service;
@@ -14,4 +14,10 @@ public class PasswordHashService : IPasswordHasherService
     {
         return Verify(password, secondPasswordHash);
     }
+
+    public static string PasswordHashStatic(string password)
+    {
+        return HashPassword(password);
+    }
+
 }

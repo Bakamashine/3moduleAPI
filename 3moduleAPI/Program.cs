@@ -1,6 +1,8 @@
 using _3moduleAPI;
-using _3moduleAPI.Contracts.Repository;
-using _3moduleAPI.Interfaces;
+using _3moduleAPI.Hubs;
+using _3moduleAPI.Interfaces.Providers;
+using _3moduleAPI.Interfaces.Repository;
+using _3moduleAPI.Interfaces.Services;
 using _3moduleAPI.Repository;
 using _3moduleAPI.Service;
 using dotenv.net;
@@ -28,6 +30,7 @@ builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddDbContext<ApplicationContext>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IBlockRepository, BlockRepository>();
 
 builder.Logging.AddConsole();
 EnvReader.TryGetStringValue("frontendUrl", out string? frontendUrl);
@@ -101,7 +104,7 @@ app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
+app.MapHub<RoomHub>("/hub/room");
 
 const string debugUrl = "http://localhost:5018";
 app.Run(debugUrl);
