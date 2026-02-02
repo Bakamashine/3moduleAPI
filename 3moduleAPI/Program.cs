@@ -1,5 +1,6 @@
 using _3moduleAPI;
 using _3moduleAPI.Hubs;
+using _3moduleAPI.Interfaces.Hubs;
 using _3moduleAPI.Interfaces.Providers;
 using _3moduleAPI.Interfaces.Repository;
 using _3moduleAPI.Interfaces.Services;
@@ -42,7 +43,7 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(frontendUrl)
         .AllowAnyHeader()
         .AllowAnyMethod()
-    .AllowCredentials();
+        .AllowCredentials();
     });
 });
 
