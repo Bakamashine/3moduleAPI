@@ -6,6 +6,7 @@ namespace _3moduleAPI.Interfaces.Hubs
 {
     public interface IRoomHub
     {
-        Task ReceiveMessage(BlockDto data);
+        Task AddItem(BlockDto data);
+        Task UpdateItem(BlockDto data);
     }
 }

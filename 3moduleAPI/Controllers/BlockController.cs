@@ -35,17 +35,21 @@ namespace _3moduleAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> SetBlock([FromBody] SetBlockRequest request)
         {
+            string[] colors = ["red", "blue", "white"];
+            // Random rand = new();
+            string randomColor = colors[new Random().Next(colors.Length)];
+            
             var room = await roomRepository.GetById(request.RoomId);
             if (room == null)
             {
                 return NotFound("Room not found");
             }
-            var block = await repository.Create(new BlockEnity(request.X, request.Y, request.Width, request.Height, request.RoomId, request.Color));
-            //await hubContext.Clients.Group(request.RoomId.ToString())
-            //    .BlockCreated(block);
-            
-            await hubContext.Clients.Group(room.Id.ToString()).ReceiveMessage(BlockDto.Convert(block));
-            return NoContent();
+            BlockEnity? block = await repository.Create(new BlockEnity(
+                0, 0, 100, 100, request.RoomId, randomColor
+            ));
+            Console.WriteLine($"Created block with ID: {block.Id} in Room ID: {request.RoomId}");
+            await hubContext.Clients.Group(room.Id.ToString()).AddItem(BlockDto.Convert(block));
+            return Ok(block);
         }
 
         [HttpPut]
@@ -54,7 +58,7 @@ namespace _3moduleAPI.Controllers
             var block = await repository.GetById(request.Id);
             if (block == null) return NotFound();
             var newBlock = await repository.UpdateSizeAndPosition(block, request.X, request.Y, request.Width, request.Height);
-            await hubContext.Clients.Group(newBlock.RoomId.ToString()).ReceiveMessage(BlockDto.Convert(newBlock));
+            await hubContext.Clients.Group(newBlock.RoomId.ToString()).UpdateItem(BlockDto.Convert(newBlock));
 
             // await hubContext.Clients.Group(newBlock.RoomId.ToString()).SUS("sus");
 
